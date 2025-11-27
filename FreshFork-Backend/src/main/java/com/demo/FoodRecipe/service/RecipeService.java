@@ -28,6 +28,7 @@ public class RecipeService {
     }
 
     // Get a recipe by ID
+    @SuppressWarnings("null")
     public Recipe getRecipeById(Long id) {
         return recipeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recipe not found with id " + id));
     }

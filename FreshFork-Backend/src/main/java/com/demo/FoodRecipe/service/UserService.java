@@ -19,6 +19,7 @@ public class UserService {
     @Autowired
     JWTService jwtService;
 
+    @SuppressWarnings("null")
     public String addUser(@RequestBody User user) {
         ur.save(user);
         return "User added";
