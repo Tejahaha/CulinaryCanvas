@@ -3,10 +3,10 @@ FROM maven:3.9.6-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# Clone your GitHub repo
-RUN git clone --depth=1 https://github.com/Tejahaha/CulinaryCanvas.git .
+# Copy your whole project (instead of cloning GitHub)
+COPY . .
 
-# Go to backend folder
+# Enter backend folder
 WORKDIR /app/FreshFork-Backend
 
 # Build Spring Boot JAR
@@ -17,7 +17,7 @@ FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
-# Copy compiled JAR
+# Copy compiled JAR from the build stage
 COPY --from=build /app/FreshFork-Backend/target/*.jar app.jar
 
 EXPOSE 8083

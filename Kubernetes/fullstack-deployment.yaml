@@ -103,7 +103,7 @@ spec:
               echo "mysql is reachable"
       containers:
         - name: backend
-          image: tejahaha/freshfork-backend:v3
+          image: tejahaha/freshfork-backend:v4
           ports:
             - containerPort: 8083
           env:
@@ -168,7 +168,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: tejahaha/freshfork-frontend:v4
+          image: tejahaha/freshfork-frontend:v7
           ports:
             - containerPort: 80
           env:

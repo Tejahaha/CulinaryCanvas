@@ -3,12 +3,13 @@ FROM node:18 AS build
 
 WORKDIR /app
 
-# Clone repo
-RUN git clone --depth=1 https://github.com/Tejahaha/CulinaryCanvas.git .
+# Copy your entire project into the container
+COPY . .
 
 # Go into frontend
 WORKDIR /app/FreshFork-Frontend
 
+# Install deps & build
 RUN npm ci --legacy-peer-deps
 RUN npm run build
 
@@ -18,7 +19,7 @@ FROM nginx:alpine
 # Clean default nginx static content
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy React build
+# Copy React build from local build stage
 COPY --from=build /app/FreshFork-Frontend/dist /usr/share/nginx/html/
 
 EXPOSE 80
