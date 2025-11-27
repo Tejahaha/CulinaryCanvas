@@ -1,0 +1,489 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&family=Merienda:wght@400;700&display=swap');
+@import "tailwindcss";
+
+/* 
+  Design Tokens
+  -------------
+  Light + dark palette tuned to:
+  - Warm background (#faf7f2)
+  - Emerald → amber gradients
+  - Soft, elevated cards
+*/
+
+:root,
+.light-mode {
+  /* Backgrounds & surfaces */
+  --bg: #faf7f2;                /* main app background */
+  --bg-soft: #f4eee4;           /* subtle section background */
+  --surface: #ffffff;           /* standard card surface */
+  --surface-muted: rgba(255, 255, 255, 0.97);
+
+  /* Brand colors (emerald / amber) */
+  --primary: #059669;           /* emerald-600 */
+  --primary-soft: #dcfce7;      /* emerald-100 */
+  --primary-strong: #047857;    /* emerald-700 */
+  --accent: #f59e0b;            /* amber-500 */
+  --accent-soft: #fef3c7;       /* amber-100 */
+
+  /* Text */
+  --text-main: #0f172a;         /* slate-900 */
+  --text-secondary: #64748b;    /* slate-500/600-ish */
+  --text-muted: #94a3b8;        /* slate-400 */
+
+  /* Borders & shadows */
+  --border-subtle: rgba(15, 23, 42, 0.04);
+  --border-strong: rgba(15, 23, 42, 0.12);
+  --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.06);
+  --shadow-elevated: 0 22px 45px rgba(15, 23, 42, 0.10);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #22c55e, #f59e0b);
+  --gradient-primary-soft: radial-gradient(
+      circle at top,
+      #dcfce7,
+      transparent 55%
+    ),
+    radial-gradient(circle at bottom, #fef3c7, transparent 55%);
+
+  /* Legacy aliases (for older components) */
+  --background: var(--bg);
+  --card-bg: var(--surface-muted);
+  --border-color: var(--border-subtle);
+
+  /* Tooltip */
+  --tooltip-bg: #0f172a;
+  --tooltip-text: #f9fafb;
+}
+.dark-mode {
+  /* Backgrounds & surfaces */
+  --bg: #0f1115;                     /* dark version of light cream */
+  --bg-soft: #16181d;                /* darker soft background */
+  --surface: #1c1f25;                /* main card surface */
+  --surface-muted: rgba(28, 31, 37, 0.9);
+
+  /* Brand colors (emerald / amber) dark variants */
+  --primary: #34d399;                /* softer emerald for dark mode */
+  --primary-soft: rgba(52, 211, 153, 0.15);
+  --primary-strong: #10b981;         /* deeper emerald highlight */
+  --accent: #fbbf24;                 /* amber but warm-glowing */
+  --accent-soft: rgba(251, 191, 36, 0.15);
+
+  /* Text for dark mode (light tones on dark bg) */
+  --text-main: #f1f5f9;              /* slate-100 */
+  --text-secondary: #cbd5e1;         /* slate-300 */
+  --text-muted: #94a3b8;             /* slate-400 (works in dark too) */
+
+  /* Borders & shadows */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 25px 55px rgba(0, 0, 0, 0.55);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(
+    135deg,
+    #065f46,
+    #b45309
+  ); /* emerald-900 → amber-700 */
+  
+  --gradient-primary-soft: radial-gradient(
+      circle at top,
+      rgba(52, 211, 153, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at bottom,
+      rgba(251, 191, 36, 0.12),
+      transparent 60%
+    );
+
+  /* Legacy aliases */
+  --background: var(--bg);
+  --card-bg: var(--surface-muted);
+  --border-color: var(--border-subtle);
+
+  /* Tooltip */
+  --tooltip-bg: #f8fafc;            /* white tooltip on dark bg */
+  --tooltip-text: #0f172a;
+}
+
+
+/* Global layout / typography */
+
+body {
+  background-color: var(--bg);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+/* Links */
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition:
+    color 0.18s ease,
+    opacity 0.18s ease;
+}
+
+a:hover {
+  color: var(--primary-strong);
+}
+
+/* BUTTONS
+   -------
+   .btn: neutral surface button
+   .btn-primary: gradient CTA button
+*/
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-muted);
+  color: var(--text-main);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.24s ease,
+    background-color 0.24s ease,
+    border-color 0.24s ease,
+    color 0.24s ease,
+    opacity 0.24s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--border-strong);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-primary {
+  background-image: var(--gradient-primary);
+  border-color: transparent;
+  color: #f9fafb;
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-elevated);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-main);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-main);
+}
+
+/* CARDS / PANELS */
+
+.card {
+  background: var(--surface-muted);
+  border-radius: 1.25rem;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-elevated);
+  border-color: var(--border-strong);
+}
+
+/* FORM ELEMENTS */
+
+input,
+select,
+textarea {
+  background: var(--surface);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-main);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.4);
+  background-color: #ffffff;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background: var(--surface-muted);
+}
+
+/* STEPPERS / PROGRESS */
+
+.progress {
+  height: 4px;
+  background: var(--border-subtle);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-image: var(--gradient-primary);
+  transition: width 0.4s ease;
+}
+
+.step {
+  background: var(--surface);
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.step--active {
+  background-image: var(--gradient-primary);
+  color: #f9fafb;
+  border-color: transparent;
+}
+
+/* CHIPS / PILLS */
+
+.chip {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-soft);
+  color: var(--text-secondary);
+  transition:
+    transform 0.12s ease,
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.chip:hover {
+  transform: translateY(-1px);
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.chip--active {
+  background-image: var(--gradient-primary);
+  color: #f9fafb;
+  border-color: transparent;
+}
+
+/* SKELETON LOADERS */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.18) 25%,
+    rgba(148, 163, 184, 0.08) 37%,
+    rgba(148, 163, 184, 0.18) 63%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 0.75rem;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+/* TOOLTIP */
+
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.28);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* UTILITIES */
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-pad {
+  padding: 2rem;
+}
+
+.center-viewport {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Base body text – ingredients, instructions, default UI */
+body {
+  font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+/* HERO / BRAND */
+
+/* Brand wordmark in header + main hero */
+.brand-logo {
+  font-family: "Pacifico", "Nunito", system-ui, cursive;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+/* Large hero headline (“Discover. Cook. Share.”) */
+.hero-heading {
+  font-family: "Playfair Display", "Times New Roman", serif;
+  font-weight: 600;
+}
+
+/* NAVIGATION & MENU */
+
+.navbar,
+.navbar a,
+.nav-link {
+  font-family: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* SECTION HEADINGS */
+
+.section-heading,
+h2.section-title {
+  font-family: "Playfair Display", "Times New Roman", serif;
+  font-weight: 600;
+}
+
+/* RECIPE TITLES */
+
+.recipe-title {
+  font-family: "Playfair Display", "Times New Roman", serif;
+  font-weight: 600;
+  font-style: italic; /* optional, gives that “chef’s special” feel */
+}
+
+/* BODY TEXT / INGREDIENT LISTS / INSTRUCTIONS */
+
+.recipe-body,
+.recipe-instructions,
+.recipe-ingredients {
+  font-family: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* BUTTONS & CTAs */
+
+button,
+.btn,
+.btn-primary {
+  font-family: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ACCENT QUOTES / HIGHLIGHTS */
+
+.quote,
+.highlight-quote {
+  font-family: "Merienda", "Pacifico", "Nunito", cursive;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* Small overline label above headings, e.g. “Trending this week” tag */
+.overline-label {
+  font-family: "Nunito", system-ui, -apple-system, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
