@@ -7,4 +7,5 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  base: '/CulinaryCanvas/',  // Match your subdirectory
 })
