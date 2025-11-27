@@ -5,6 +5,8 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Pencil, Trash2 } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
 function UserRecipesComponent() {
   const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +27,7 @@ function UserRecipesComponent() {
       const userId = decodedToken.id;
 
       const response = await axios.get(
-        `http://localhost:8083/api/recipes/my-recipes?userId=${userId}`
+        `${API_BASE}/recipes/my-recipes?userId=${userId}`
       );
       setRecipes(response.data || []);
     } catch (err) {
@@ -43,7 +45,7 @@ function UserRecipesComponent() {
       const userId = decodedToken.id;
 
       await axios.delete(
-        `http://localhost:8083/api/recipes/${recipeId}?userId=${userId}`
+        `${API_BASE}/recipes/${recipeId}?userId=${userId}`
       );
       setRecipes((prev) => prev.filter((recipe) => recipe.id !== recipeId));
     } catch (err) {
@@ -70,7 +72,7 @@ function UserRecipesComponent() {
       };
 
       await axios.put(
-        `http://localhost:8083/api/recipes/${updatedRecipe.id}?userId=${userId}`,
+        `${API_BASE}/recipes/${updatedRecipe.id}?userId=${userId}`,
         formattedRecipe
       );
       setEditingRecipe(null);

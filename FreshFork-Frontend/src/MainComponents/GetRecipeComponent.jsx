@@ -4,6 +4,8 @@ import { useState } from "react";
 import axios from "axios";
 import { Search } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
 function GetRecipeComponent() {
   const [recipe, setRecipe] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,7 +25,7 @@ function GetRecipeComponent() {
 
     try {
       const response = await axios.get(
-        `http://localhost:8083/api/recipes/search/by-name?name=${encodeURIComponent(
+        `${API_BASE}/recipes/search/by-name?name=${encodeURIComponent(
           searchTerm
         )}`
       );

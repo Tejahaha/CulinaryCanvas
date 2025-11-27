@@ -4,6 +4,8 @@ import { useState } from "react"
 import axios from "axios"
 import { PlusCircle, ChevronDown, ChevronUp } from "lucide-react"
 
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
 function AddRecipeComponent() {
   const [recipe, setRecipe] = useState({
     name: "", // Add name field
@@ -45,7 +47,7 @@ function AddRecipeComponent() {
       }
 
       const response = await axios.post(
-        `http://localhost:8083/api/recipes?userId=${userId}`, // Pass userId as a query parameter
+        `${API_BASE}/recipes?userId=${userId}`, // Pass userId as a query parameter
         formattedRecipe,
         {
           headers: { Authorization: `Bearer ${token}` },

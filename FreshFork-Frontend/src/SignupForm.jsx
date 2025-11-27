@@ -4,6 +4,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { ThemeContext } from "./ThemeContext";
 import { ChefHat, ArrowRight } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
 const SignupForm = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -20,7 +22,7 @@ const SignupForm = () => {
     setError("");
 
     try {
-      await axios.post("http://localhost:8083/user/signup", {
+      await axios.post(`${API_BASE}/user/signup`, {
         email,
         name,
         password,

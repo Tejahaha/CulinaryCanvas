@@ -4,6 +4,8 @@ import { useState } from "react"
 import axios from "axios"
 import { Trash2, AlertTriangle, CheckCircle } from "lucide-react"
 
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
 function DeleteRecipeComponent() {
   const [recipeId, setRecipeId] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -25,7 +27,7 @@ function DeleteRecipeComponent() {
     setStatus({ type: null, message: "" })
 
     try {
-      const response = await axios.get(`http://localhost:8083/api/recipes/${recipeId}`)
+      const response = await axios.get(`${API_BASE}/recipes/${recipeId}`)
       setRecipe(response.data)
       setConfirmDelete(true)
     } catch (error) {
@@ -44,7 +46,7 @@ function DeleteRecipeComponent() {
     setStatus({ type: null, message: "" })
 
     try {
-      await axios.delete(`http://localhost:8083/api/recipes/${recipeId}`)
+      await axios.delete(`${API_BASE}/recipes/${recipeId}`)
       setStatus({
         type: "success",
         message: "Recipe deleted successfully!",

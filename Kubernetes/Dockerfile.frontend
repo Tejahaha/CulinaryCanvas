@@ -1,20 +1,26 @@
-# ---------- build ----------
+# ---------- Build ----------
 FROM node:18 AS build
+
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
-
+# Clone repo
 RUN git clone --depth=1 https://github.com/Tejahaha/CulinaryCanvas.git .
+
+# Go into frontend
 WORKDIR /app/FreshFork-Frontend
 
 RUN npm ci --legacy-peer-deps
 RUN npm run build
 
-# ---------- runtime ----------
+# ---------- Serve ----------
 FROM nginx:alpine
 
+# Clean default nginx static content
 RUN rm -rf /usr/share/nginx/html/*
-COPY --from=build /app/FreshFork-Frontend/dist/ /usr/share/nginx/html/
+
+# Copy React build
+COPY --from=build /app/FreshFork-Frontend/dist /usr/share/nginx/html/
 
 EXPOSE 80
+
 CMD ["nginx", "-g", "daemon off;"]

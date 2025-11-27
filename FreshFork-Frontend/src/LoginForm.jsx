@@ -4,6 +4,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { ThemeContext } from "./ThemeContext";
 import { ChefHat, ArrowRight } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +21,7 @@ const LoginForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8083/user/signin",
+        `${API_BASE}/user/signin`,
         { email, password }
       );
       localStorage.setItem("token", response.data);

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Search, SlidersHorizontal } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
 function SearchRecipesComponent() {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,7 +19,7 @@ function SearchRecipesComponent() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await axios.get("http://localhost:8083/api/recipes/all");
+        const response = await axios.get(`${API_BASE}/recipes/all`);
         if (Array.isArray(response.data)) {
           setRecipes(response.data);
         } else {
@@ -45,8 +47,8 @@ function SearchRecipesComponent() {
 
       const response = await axios.get(
         searchTerm
-          ? `http://localhost:8083/api/recipes/search/by-name?${params.toString()}`
-          : "http://localhost:8083/api/recipes/all"
+          ? `${API_BASE}/recipes/search/by-name?${params.toString()}`
+          : `${API_BASE}/recipes/all`
       );
       const data = Array.isArray(response.data) ? response.data : [];
 
