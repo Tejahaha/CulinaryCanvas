@@ -25,7 +25,7 @@ function GetRecipeComponent() {
 
     try {
       const response = await axios.get(
-        `${API_BASE}/recipes/search/by-name?name=${encodeURIComponent(
+        `${API_BASE}/api/recipes/search/by-name?name=${encodeURIComponent(
           searchTerm
         )}`
       );

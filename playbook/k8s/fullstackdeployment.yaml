@@ -171,10 +171,7 @@ spec:
           image: tejahaha/freshfork-frontend:v12
           ports:
             - containerPort: 80
-          env:
-            # NOTE: this env is useful for local dev but React baked env is set at build time.
-            - name: REACT_APP_BACKEND_URL
-              value: http://localhost:30083
+
 ---
 # =========================
 # Frontend Service (NodePort)

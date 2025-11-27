@@ -47,7 +47,7 @@ function AddRecipeComponent() {
       }
 
       const response = await axios.post(
-        `${API_BASE}/recipes?userId=${userId}`, // Pass userId as a query parameter
+        `${API_BASE}/api/recipes?userId=${userId}`, // Pass userId as a query parameter
         formattedRecipe,
         {
           headers: { Authorization: `Bearer ${token}` },

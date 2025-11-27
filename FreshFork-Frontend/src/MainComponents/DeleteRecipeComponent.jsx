@@ -27,7 +27,7 @@ function DeleteRecipeComponent() {
     setStatus({ type: null, message: "" })
 
     try {
-      const response = await axios.get(`${API_BASE}/recipes/${recipeId}`)
+      const response = await axios.get(`${API_BASE}/api/recipes/${recipeId}`)
       setRecipe(response.data)
       setConfirmDelete(true)
     } catch (error) {
@@ -46,7 +46,7 @@ function DeleteRecipeComponent() {
     setStatus({ type: null, message: "" })
 
     try {
-      await axios.delete(`${API_BASE}/recipes/${recipeId}`)
+      await axios.delete(`${API_BASE}/api/recipes/${recipeId}`)
       setStatus({
         type: "success",
         message: "Recipe deleted successfully!",

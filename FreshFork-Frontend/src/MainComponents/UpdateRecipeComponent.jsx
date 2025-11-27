@@ -36,7 +36,7 @@ function UpdateRecipeComponent() {
     setStatus({ type: null, message: "" })
 
     try {
-      const response = await axios.get(`${API_BASE}/recipes/${recipeId}`);
+      const response = await axios.get(`${API_BASE}/api/recipes/${recipeId}`);
       const recipe = response.data
 
       setRecipeDetails({
@@ -78,7 +78,7 @@ function UpdateRecipeComponent() {
         ingredients: recipeDetails.ingredients.split(",").map((item) => item.trim()),
       }
 
-      const response = await axios.put(`${API_BASE}/recipes/${recipeId}?userId=${userId}`, formattedRecipe, {
+      const response = await axios.put(`${API_BASE}/api/recipes/${recipeId}?userId=${userId}`, formattedRecipe, {
         headers: { Authorization: `Bearer ${token}` },
       })
       console.log("Recipe updated:", response.data)

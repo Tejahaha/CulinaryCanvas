@@ -1,16 +1,28 @@
-# Build stage
-FROM node:18 AS build-stage
+# ---------- Build ----------
+ARG REACT_APP_BACKEND_URL=http://localhost:30083
+ARG VITE_BASE=/
+
+FROM node:18 AS build
+ARG REACT_APP_BACKEND_URL
+ARG VITE_BASE
+
 WORKDIR /app
+
+# Copy ONLY frontend code (because Dockerfile is inside FreshFork-Frontend)
 COPY . .
+
+# Pass backend URL to Vite environment
+ENV VITE_BACKEND_URL=${REACT_APP_BACKEND_URL}
+
 RUN npm install --legacy-peer-deps
-RUN npm run build
+RUN npm run build -- --base ${VITE_BASE}
 
-# Runtime stage
+# ---------- Serve ----------
 FROM nginx:alpine
-COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-# Nginx config for SPA routing
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=build /app/dist /usr/share/nginx/html/
 
 EXPOSE 80
+
 CMD ["nginx", "-g", "daemon off;"]

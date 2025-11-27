@@ -19,7 +19,7 @@ function SearchRecipesComponent() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`${API_BASE}/recipes/all`);
+        const response = await axios.get(`${API_BASE}/api/recipes/all`);
         if (Array.isArray(response.data)) {
           setRecipes(response.data);
         } else {
@@ -47,8 +47,8 @@ function SearchRecipesComponent() {
 
       const response = await axios.get(
         searchTerm
-          ? `${API_BASE}/recipes/search/by-name?${params.toString()}`
-          : `${API_BASE}/recipes/all`
+          ? `${API_BASE}/api/recipes/search/by-name?${params.toString()}`
+          : `${API_BASE}/api/recipes/all`
       );
       const data = Array.isArray(response.data) ? response.data : [];
 

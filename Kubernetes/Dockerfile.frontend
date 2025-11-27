@@ -1,25 +1,30 @@
-# ---------- Build ----------
+# Build frontend from local FreshFork-Frontend folder (build context must be repo root)
+ARG REACT_APP_BACKEND_URL=http://freshfork-backend:8083
+ARG VITE_BASE=/
+
 FROM node:18 AS build
+ARG REACT_APP_BACKEND_URL
+ARG VITE_BASE
 
 WORKDIR /app
 
-# Copy your entire project into the container
-COPY . .
+# Copy only frontend sources (fast, avoids copying whole repo twice)
+COPY FreshFork-Frontend/ ./FreshFork-Frontend/
 
-# Go into frontend
 WORKDIR /app/FreshFork-Frontend
 
-# Install deps & build
-RUN npm ci --legacy-peer-deps
-RUN npm run build
+# Pass the backend url into the build environment for Vite
+ENV VITE_BACKEND_URL=${REACT_APP_BACKEND_URL}
+
+# Install and build (use npm install to avoid requiring package-lock.json)
+RUN npm install --legacy-peer-deps
+RUN npm run build -- --base ${VITE_BASE}
 
 # ---------- Serve ----------
 FROM nginx:alpine
 
-# Clean default nginx static content
+# Remove default nginx content and copy production build
 RUN rm -rf /usr/share/nginx/html/*
-
-# Copy React build from local build stage
 COPY --from=build /app/FreshFork-Frontend/dist /usr/share/nginx/html/
 
 EXPOSE 80
